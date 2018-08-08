@@ -3,8 +3,19 @@
 // http://patreon.com/codingtrain
 // Code for: https://youtu.be/cXgA1d_E-jY&
 
+function mutate(x) {
+    if (random(1) < 0.1) {
+      let offset = randomGaussian() * 0.5;
+      let newx = x + offset;
+      return newx;
+    } else {
+      return x;
+    }
+  }
+  
+
 class Bird {
-    constructor() {
+    constructor(brain) {
         this.y = height / 2;
         this.x = 64;
 
@@ -15,8 +26,12 @@ class Bird {
         
         this.score = 0;
         this.fitness = 0;
-
-        this.brain = new NeuralNetwork(4, 4, 1);
+        if (brain) {
+            this.brain = brain.copy();
+            this.brain.mutate(mutate);
+        } else {
+            this.brain = new NeuralNetwork(4, 4, 1);
+        }
     }
 
     show() {
